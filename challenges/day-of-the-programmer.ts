@@ -37,8 +37,13 @@ function readLine(): string {
  */
 
 function dayOfProgrammer(year: number): string {
-  // Write your code here
-  return "";
+  const isLeapYear =
+    year < 1919
+      ? year % 4 === 0
+      : year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+  const day = 256 - 31 - (isLeapYear ? 29 : 28) - 31 - 30 - 31 - 30 - 31 - 31;
+  if (year === 1918) return `${day + 13}.09.1918`;
+  return `${day}.09.${year}`;
 }
 
 function main() {
