@@ -1,3 +1,9 @@
+// https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem
+// npx tsx challenges/ctci-array-left-rotation.ts
+// Sample Input:
+// 5 4
+// 1 2 3 4 5
+
 "use strict";
 
 import { WriteStream, createWriteStream } from "fs";
@@ -33,12 +39,19 @@ function readLine(): string {
  */
 
 function rotLeft(a: number[], d: number): number[] {
-  // Write your code here
+  const l = a.length;
+  let ret: number[] = [];
+  a.forEach((elem: number, inputIndex: number) => {
+    const outputIndex = (inputIndex - d + l) % l;
+    ret[outputIndex] = elem;
+  });
+  return ret;
 }
 
 function main() {
-  const ws: WriteStream = createWriteStream(process.env["OUTPUT_PATH"]);
-
+  const ws: WriteStream = createWriteStream(
+    process.env["OUTPUT_PATH"] || "/dev/stdout"
+  );
   const firstMultipleInput: string[] = readLine()
     .replace(/\s+$/g, "")
     .split(" ");
