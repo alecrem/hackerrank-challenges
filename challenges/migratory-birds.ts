@@ -37,7 +37,22 @@ function readLine(): string {
 
 function migratoryBirds(arr: number[]): number {
   // Write your code here
-  return 0;
+  let mostFrequentType = 0;
+  let occurrences: number[] = [];
+  let maxOccurrences = 0;
+  arr.forEach((type: number) => {
+    if (occurrences[type] === undefined) {
+      occurrences[type] = 0;
+    }
+    occurrences[type]++;
+    if (occurrences[type] > maxOccurrences) {
+      maxOccurrences = occurrences[type];
+      mostFrequentType = type;
+    } else if (occurrences[type] === maxOccurrences) {
+      mostFrequentType = Math.min(mostFrequentType!, type);
+    }
+  });
+  return mostFrequentType;
 }
 
 function main() {
