@@ -35,8 +35,15 @@ function readLine(): string {
  */
 
 function whatFlavors(cost: number[], money: number): void {
-  // Write your code here
-  console.log("cost", cost, "money", money);
+  let costMap: Map<number, number> = new Map();
+  cost.forEach((c: number, index: number) => {
+    const complement = money - c;
+    if (costMap.has(complement)) {
+      console.log(costMap.get(complement)! + 1, index + 1);
+      return `${costMap.get(complement)! + 1} ${index + 1}`;
+    }
+    costMap.set(c, index);
+  });
 }
 
 function main() {
