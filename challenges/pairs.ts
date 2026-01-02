@@ -37,16 +37,15 @@ function readLine(): string {
  */
 
 function pairs(k: number, arr: number[]): number {
+  const numSet = new Set(arr);
   let count = 0;
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i + 1; j < arr.length; j++) {
-      const diff = Math.abs(arr[i] - arr[j]);
-      if (diff === k) {
-        count++;
-      }
+
+  for (const num of arr) {
+    if (numSet.has(num + k)) {
+      count++;
     }
   }
-  // Write your code here
+
   return count;
 }
 
