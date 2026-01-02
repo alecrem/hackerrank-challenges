@@ -35,15 +35,12 @@ function readLine(): string {
  */
 
 function minimumAbsoluteDifference(arr: number[]): number {
-  const numSet = new Set(arr);
-  const diffs = new Array();
-  for (const num of arr) {
-    const numSetRest = new Set(numSet);
-    numSetRest.delete(num);
-    const numDiffs = Array.from(numSetRest).map((n) => Math.abs(n - num));
-    diffs.push(Math.min(...numDiffs));
+  const sortedArr = arr.slice().sort((a, b) => a - b);
+  let minDiff = Infinity;
+  for (let index = 0; index < sortedArr.length - 1; index++) {
+    minDiff = Math.min(minDiff, sortedArr[index + 1] - sortedArr[index]);
   }
-  return Math.min(...diffs);
+  return minDiff;
 }
 
 function main() {
