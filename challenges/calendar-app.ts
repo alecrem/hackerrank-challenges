@@ -60,47 +60,10 @@ export class CalendarApp {
     // 名前で管理しているMapから削除
     this.eventsByName.delete(event_name);
 
-    // ソートされた配列からも削除
-    const { startMinutes } = event;
-
-    // 二分探索で開始時刻の場所を検索
-    let left = 0,
-      right = this.eventsSorted.length - 1;
-    while (left <= right) {
-      const mid = (left + right) >> 1;
-      if (this.eventsSorted[mid].startMinutes === startMinutes) {
-        // 同じ開始時刻のイベントの名前を確認して削除
-        if (this.eventsSorted[mid].name === event_name) {
-          this.eventsSorted.splice(mid, 1);
-          break;
-        } else {
-          // 同じ開始時刻の隣接イベントがあればそれも確認（理論上重複不可だが安全のため）
-          let i = mid - 1;
-          while (i >= 0 && this.eventsSorted[i].startMinutes === startMinutes) {
-            if (this.eventsSorted[i].name === event_name) {
-              this.eventsSorted.splice(i, 1);
-              return;
-            }
-            i--;
-          }
-          i = mid + 1;
-          while (
-            i < this.eventsSorted.length &&
-            this.eventsSorted[i].startMinutes === startMinutes
-          ) {
-            if (this.eventsSorted[i].name === event_name) {
-              this.eventsSorted.splice(i, 1);
-              return;
-            }
-            i++;
-          }
-          break; // 発見できなかったら終了
-        }
-      } else if (this.eventsSorted[mid].startMinutes < startMinutes) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
+    // ソートされた配列からも削除（名前で直接検索）
+    const index = this.eventsSorted.findIndex((ev) => ev.name === event_name);
+    if (index !== -1) {
+      this.eventsSorted.splice(index, 1);
     }
   }
 
