@@ -34,8 +34,24 @@ function readLine(): string {
  */
 
 function sherlockAndAnagrams(s: string): number {
-  // Write your code here
-  return 0;
+  const map = new Map<string, number>();
+  // Generate all substrings
+  for (let i = 0; i < s.length; i++) {
+    for (let j = i + 1; j <= s.length; j++) {
+      const substring = s.slice(i, j);
+      // For each substring, sort it to get signature
+      const signature = substring.split("").sort().join("");
+      // Increment map.get(signature) or set to 1
+      map.set(signature, (map.get(signature) || 0) + 1);
+    }
+  }
+  // For each map value n, add n*(n-1)/2 to total
+  // Combination formula: (n choose 2)
+  let total = 0;
+  for (const count of map.values()) {
+    total += (count * (count - 1)) / 2;
+  }
+  return total;
 }
 
 function main() {
