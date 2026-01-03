@@ -32,7 +32,23 @@ function readLine(): string {
  */
 
 function minimumBribes(q: number[]): void {
-  // Write your code here
+  let bribeCount = 0;
+  for (let i = 0; i < q.length; i++) {
+    // 最初は最後尾にいた人が現在の位置まで来るためには2回以上のbribeはできない
+    const originalPosition = q[i] - 1;
+    if (originalPosition - i > 2) {
+      // カオスすぎる
+      console.log("Too chaotic");
+      return;
+    }
+    // 全ての人ついて、元の位置から現在の位置までにいる人のうち、自分より大きい番号の人の数を数える
+    for (let j = Math.max(0, originalPosition - 1); j < i; j++) {
+      if (q[j] > q[i]) {
+        bribeCount++;
+      }
+    }
+  }
+  console.log(bribeCount);
 }
 
 function main() {
