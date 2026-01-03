@@ -3,27 +3,38 @@
 // printf "bbcdbbb" | npx tsx challenges/longest-substring.ts
 
 function processData(input: string) {
-  let longestSubstring = "";
-  // 入力値の各文字をループ
-  input.split("").forEach((_, startIndex) => {
-    // その文字から始まる部分文字列をループ
-    for (let endIndex = startIndex + 1; endIndex <= input.length; endIndex++) {
-      const substring = input.slice(startIndex, endIndex);
-      // 部分文字列の文字の集合を作成（複数回入っている文字が排除される）
-      const charSet = new Set(substring.split(""));
-      if (charSet.size === substring.length) {
-        // 今までで一番長かったら最長文字列を更新
-        if (substring.length > longestSubstring.length) {
-          longestSubstring = substring;
-        }
-      } else {
-        // 重複文字が見つかったらそれ以上伸ばしても無駄なのでループを抜ける
-        break;
-      }
+  let maxLength = 0;
+  let maxSubstring = "";
+
+  // 部分文字列の開始インデックス
+  let start = 0;
+
+  // 文字 → 最後に出現したインデックス
+  const charIndexMap = new Map<string, number>();
+
+  // ウインドウを拡張していく
+  for (let end = 0; end < input.length; end++) {
+    const char = input[end];
+
+    // 現在のウインドウ内でこの文字を以前に見たか？
+    if (charIndexMap.has(char)) {
+      // 最後に見た位置の次のインデックスに開始位置を移動
+      start = Math.max(start, charIndexMap.get(char)! + 1);
     }
-  });
-  console.log(longestSubstring);
-  return longestSubstring;
+
+    // マップにこの文字の最新位置を更新（または追加）
+    charIndexMap.set(char, end);
+
+    const currentLength = end - start + 1;
+
+    if (currentLength > maxLength) {
+      maxLength = currentLength;
+      maxSubstring = input.slice(start, end + 1);
+    }
+  }
+
+  console.log(maxSubstring);
+  return maxSubstring;
 }
 
 process.stdin.resume();
